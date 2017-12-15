@@ -12,10 +12,10 @@ public class Run {
             throw new IllegalArgumentException("Must have either 'producer', 'consumer' or 'dbconsumer' as argument");
         }
         switch (args[0]) {
-            case "producer":
+            case "producer2":
                 Producer2.main(args);
                 break;
-            case "consumer":
+            case "consumer2":
                 Consumer2.main(args);
                 break;
             case "dbconsumer":
