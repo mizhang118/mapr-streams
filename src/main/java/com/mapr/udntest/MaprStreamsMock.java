@@ -5,8 +5,23 @@ import java.io.FileReader;
 import java.util.List;
 
 public class MaprStreamsMock {
+	private String topic = "/streams/test-stream:test-topic";
 	private StringBuilder report = new StringBuilder();
 	private Consumer consumer = null;
+	
+	public MaprStreamsMock() {}
+	
+	public MaprStreamsMock(String topic) {
+		this.topic = topic;
+	}
+	
+	public void run() {
+		this.prepare();
+		this.waitingForTest();
+		this.test();
+		this.report();
+		this.close();
+	}
 
 	public void prepare() {
 		System.err.println("Start MapR-Streams consumer ...");
@@ -14,7 +29,7 @@ public class MaprStreamsMock {
 		consumer.start();
 		
 		System.err.println("Start MapR-Streams producer ...");
-		Producer producer = new Producer("/streams/test-stream:test-topic");
+		Producer producer = new Producer(topic);
 		BufferedReader reader = null;
 		try {
 			reader = new BufferedReader(new FileReader("test.data"));

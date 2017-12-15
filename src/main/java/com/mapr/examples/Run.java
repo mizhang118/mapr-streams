@@ -1,5 +1,6 @@
 package com.mapr.examples;
 
+import com.mapr.udntest.MaprStreamsMock;
 import java.io.IOException;
 
 /**
@@ -11,7 +12,12 @@ public class Run {
         if (args.length < 1) {
             throw new IllegalArgumentException("Must have either 'producer', 'consumer' or 'dbconsumer' as argument");
         }
+        
+        MaprStreamsMock mock = new MaprStreamsMock();
+        
         switch (args[0]) {
+        	case "test":
+        		mock.run();
             case "producer2":
                 Producer2.main(args);
                 break;

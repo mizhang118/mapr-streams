@@ -75,7 +75,10 @@ public class Consumer extends Thread {
 	}
 	
 	public void close() {
-		try { consumer.close(); } catch (Exception e) {}
+		try { consumer.commitAsync(); consumer.close(); Thread.sleep(1000); } catch (Exception e) { e.printStackTrace(System.err); }
+		if ( !done ) {
+			try { this.interrupt(); } catch (Exception e) { e.printStackTrace(System.err); }
+		}
 	}
 	
 	public List<String> getItems() {

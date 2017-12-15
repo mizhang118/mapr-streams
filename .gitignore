@@ -4,3 +4,4 @@
 *.log
 git
 **/target/**
+/target/
