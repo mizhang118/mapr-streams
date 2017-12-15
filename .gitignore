@@ -3,4 +3,4 @@
 .settings/**
 *.log
 git
-/target/
+**/target/**
