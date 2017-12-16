@@ -13,12 +13,30 @@ public class Run {
             throw new IllegalArgumentException("Must have either 'producer', 'consumer' or 'dbconsumer' as argument");
         }
         
-        MaprStreamsMock mock = new MaprStreamsMock();
+    	String p1 = null;
+    	String p2 = null;
+    	
+    	if ( args.length > 1 ) {
+    		p1 = args[1];
+    	}
+    	
+    	if ( args.length > 2 ) {
+    		p2 = args[2];
+    	}
+        
+        MaprStreamsMock mock = new MaprStreamsMock(p1);
         
         switch (args[0]) {
         	case "test":
         		mock.run();
-            case "producer2":
+        		break;
+        	case "producer":
+        		mock.produce(p2);
+        		break;
+        	case "consumer":
+        		mock.consume(p2);
+        		break;
+        	case "producer2":
                 Producer2.main(args);
                 break;
             case "consumer2":

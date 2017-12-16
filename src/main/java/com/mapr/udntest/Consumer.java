@@ -16,16 +16,23 @@ import com.google.common.io.Resources;
 public class Consumer extends Thread {
 	private String groupId = "mapr-test";
 	private String topic = null;
-	private long consumeSize = 1000;
+	private long consumeSize = Long.MAX_VALUE;
 	private long skipSize = 0;
+	private long count = 0;
 	private double testRate = 1;
 	private boolean done = false;
+	private boolean print = false;
 
 	private KafkaConsumer<String, String> consumer = null;
 	private List<String> items = new ArrayList<String>();
 	
 	public Consumer(String topic) {
 		this.topic = topic;
+	}
+
+	public Consumer(String topic, String groupId) {
+		this.topic = topic;
+		this.groupId = groupId;
 	}
 	
 	public Consumer(String topic, String groupId, long cSize, double tRate) {
@@ -46,7 +53,6 @@ public class Consumer extends Thread {
         
         consumer.subscribe(Arrays.asList(topic));
         int timeouts = 0;
-        int count = 0;
         while ( count < consumeSize ) {
             // read records with a short timeout. If we time out, we don't really care.
             ConsumerRecords<String, String> records = consumer.poll(200);
@@ -57,9 +63,14 @@ public class Consumer extends Thread {
                 timeouts = 0;
             }
             for (ConsumerRecord<String, String> record : records) {
+            	String value = record.value();
+            	if ( print ) {
+            		System.out.println(value);
+            	}
             	
+            	count++;
             	if ( Math.random() <= testRate ) {
-            		items.add(record.value());
+            		items.add(value);
             	}
             	else {
             		skipSize++;
@@ -85,6 +96,10 @@ public class Consumer extends Thread {
 		return this.items;
 	}
 	
+	public long getCount() {
+		return this.count;
+	}
+	
 	public long getItemSize() {
 		return items.size();
 	}
@@ -100,5 +115,9 @@ public class Consumer extends Thread {
 		finally {
 			done = true;
 		}
+	}
+	
+	public void setPrint(boolean p) {
+		this.print = p;
 	}
 }

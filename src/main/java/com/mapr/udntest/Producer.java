@@ -2,6 +2,8 @@ package com.mapr.udntest;
 
 import java.io.InputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 import org.apache.kafka.clients.producer.KafkaProducer;
@@ -13,6 +15,11 @@ public class Producer {
 	private String topic = null;
 	private KafkaProducer<String, String> producer = null;
 	private long count = 0;
+	private long skipSize = 0;
+	private double testRate = 1;
+	private boolean done = false;
+
+	private List<String> items = new ArrayList<String>();
 	
 	public Producer(String topic) {
 		this.topic = topic;
@@ -34,6 +41,13 @@ public class Producer {
 		if ( count % 100 == 18 ) {
 			producer.flush();
 		}
+		
+		if ( Math.random() <= testRate ) {
+			items.add(data);
+		}
+		else {
+			skipSize++;
+		}
 	}
 	
 	public void flush() {
@@ -42,9 +56,14 @@ public class Producer {
 	
 	public void close() {
 		try { producer.flush(); producer.close(); } catch (Exception e) { e.printStackTrace(System.err);}
+		done = true;
 	}
 	
 	public long getCount() {
 		return count;
+	}
+	
+	public List<String> getItems() {
+		return this.items;
 	}
 }
