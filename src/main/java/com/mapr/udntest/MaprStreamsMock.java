@@ -45,7 +45,10 @@ public class MaprStreamsMock {
 					continue;
 				}
 				
-				producer.produce(line);
+				DataItem item = new DataItem(line);
+				String li = item.toString();
+				System.err.println(li);
+				producer.produce(li);
 			}
 		}
 		catch (Exception e) {
