@@ -14,4 +14,5 @@ fetch.min.bytes=50000
 # receive.buffer.bytes=262144 // fixed size buffer
 max.partition.fetch.bytes=2097152
 
-auto.offset.reset=earliest
+#earlist
+auto.offset.reset=latest

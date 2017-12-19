@@ -1,6 +1,7 @@
 package com.mapr.examples;
 
 import com.mapr.udntest.MaprStreamsMock;
+import com.mapr.udntest.EsbMock;
 import java.io.IOException;
 
 /**
@@ -12,6 +13,7 @@ public class Run {
         if (args.length < 1) {
             throw new IllegalArgumentException("Must have either 'producer', 'consumer' or 'dbconsumer' as argument");
         }
+        String test = args[0];
         
     	String p1 = null;
     	String p2 = null;
@@ -25,8 +27,11 @@ public class Run {
     	}
         
         MaprStreamsMock mock = new MaprStreamsMock(p1);
+        if ( test.equals("esb") ) {
+        	mock = new EsbMock(p1);
+        }
         
-        switch (args[0]) {
+        switch (test) {
         	case "test":
         		mock.run();
         		break;

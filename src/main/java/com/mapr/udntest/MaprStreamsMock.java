@@ -5,11 +5,16 @@ import java.io.FileReader;
 import java.util.List;
 
 public class MaprStreamsMock {
-	private String topic = "/streams/test-stream:test-topic";
-	private String input = "test.data";
-	private StringBuilder report = new StringBuilder();
-	private Producer producer = null;
-	private Consumer consumer = null;
+	protected String topic = "/streams/media-delivery.log:conductor_access_json.phx01";
+	protected String input = "test.data";
+	protected StringBuilder report = new StringBuilder();
+	protected Producer producer = null;
+	protected Consumer consumer = null;
+	
+	protected long waitingTime = 30000;			//milliseconds
+	protected long startTime = System.currentTimeMillis();
+	protected int testCaseNum = 0;
+	protected int passCaseNum = 0;
 	
 	public MaprStreamsMock() {}
 	
@@ -47,7 +52,7 @@ public class MaprStreamsMock {
 				
 				DataItem item = new DataItem(line);
 				String li = item.toString();
-				System.err.println(li);
+				//System.err.println("********" + li);
 				producer.produce(li);
 			}
 		}
@@ -60,23 +65,19 @@ public class MaprStreamsMock {
 		
 		producer.flush();
 		System.err.println("" + producer.getCount() + " items have been pushed into MapStreams.");
+		
+		DataItem.keys();
+		
 		producer.close();
 	}
 	
 	public void waitingForTest() {
-		long sec = 10000;
-		System.err.println("Wait for " + (sec/1000) + " seconds and then do testing ...");
-		try { Thread.sleep(sec); } catch (Exception e) { e.printStackTrace(System.err); }
+		System.err.println("Wait for " + (waitingTime/1000) + " seconds and then do testing ...");
+		try { Thread.sleep(waitingTime); } catch (Exception e) { e.printStackTrace(System.err); }
 	}
 	
 	public void test() {
 		System.err.println("Start to do testing ...");
-		List<String> items = consumer.getItems();
-		System.err.println("" + items.size() + " have been retrieved from MapR-Streams." );
-		
-		for ( String s : items ) {
-			System.out.println(items);
-		}
 	}
 	
 	public String report() {
