@@ -59,7 +59,7 @@ public class Consumer extends Thread {
             if (records.count() == 0) {
                 timeouts++;
             } else {
-                System.err.printf("Got %d records after %d timeouts\n", records.count(), timeouts);
+                //System.err.printf("Got %d records after %d timeouts\n", records.count(), timeouts);
                 timeouts = 0;
             }
             for (ConsumerRecord<String, String> record : records) {
@@ -70,7 +70,7 @@ public class Consumer extends Thread {
             	
             	count++;
             	if ( Math.random() <= testRate ) {
-            		items.add(value);
+            		//items.add(value);
             	}
             	else {
             		skipSize++;

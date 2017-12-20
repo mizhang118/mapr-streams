@@ -35,6 +35,9 @@ public class Run {
         	case "test":
         		mock.run();
         		break;
+        	case "esb":
+        		mock.run();
+        		break;
         	case "producer":
         		mock.produce(p2);
         		break;

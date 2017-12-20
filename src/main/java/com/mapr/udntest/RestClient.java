@@ -86,7 +86,10 @@ public class RestClient {
 	
 	public JSONObject execJson() {
 		String ret = exec();
-		JSONObject obj = new JSONObject(ret);
+		//System.err.println(">>>>>URL:" + url);
+		//System.err.println(">>>>>Result:" + ret);
+		JSONObject obj = null; 
+		try { obj = new JSONObject(ret); } catch (Exception e) { e.printStackTrace(); }
 		
 		return obj;
 	}

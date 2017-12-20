@@ -1,7 +1,10 @@
 package com.mapr.udntest;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
 import java.util.List;
 
 public class MaprStreamsMock {
@@ -15,6 +18,8 @@ public class MaprStreamsMock {
 	protected long startTime = System.currentTimeMillis();
 	protected int testCaseNum = 0;
 	protected int passCaseNum = 0;
+	protected File reportDir = new File("report");
+	protected PrintStream writer = null;
 	
 	public MaprStreamsMock() {}
 	
@@ -33,6 +38,17 @@ public class MaprStreamsMock {
 	}
 
 	public void prepare() {
+		System.err.println("Create report  ...");
+		String topicName = "topic";
+		String[] f = topic.split(":");
+		if ( f.length > 1 ) {
+			topicName = f[1];
+		}
+		try { writer = new PrintStream(new FileOutputStream(new File(reportDir, topicName + "." + startTime))); } catch (Exception e) { e.printStackTrace(System.err); }
+		if ( writer == null ) {
+			writer = System.out;
+		}
+		
 		System.err.println("Start MapR-Streams consumer ...");
 		consumer = new Consumer(this.topic);
 		consumer.start();
@@ -78,14 +94,18 @@ public class MaprStreamsMock {
 	
 	public void test() {
 		System.err.println("Start to do testing ...");
+		System.err.println(consumer.getCount() + " items have been consumed from topic " + this.topic);
 	}
 	
 	public String report() {
+		System.err.println("***********Test Report************");
+		System.err.println("Total cases: " + this.testCaseNum + ". Pass cases: " + this.passCaseNum + ". Faliure cases: " + (this.testCaseNum - this.passCaseNum));
+		System.err.println("**********************************");
 		return report.toString();
 	}
 	
 	public void close() {
-		consumer.close();
+		try { consumer.close(); } catch (Exception e) {}
 	}
 	
 	public void produce(String file) {
