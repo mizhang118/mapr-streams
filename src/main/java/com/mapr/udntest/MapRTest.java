@@ -79,13 +79,25 @@ public class MapRTest
     	Writable value = (Writable) ReflectionUtils.newInstance(reader.getValueClass(), conf);
     	/*long position = reader.getPosition();
     	reader.seek(position);*/
+    	int count = 0;
     	while (reader.next(key, value)) {
               String syncSeen = reader.syncSeen() ? "*" : "";
-    	  System.out.printf("[%s]\t%s\t%s\n", syncSeen, key, value);
+              System.out.printf("[%s]\t%s\t%s\n", syncSeen, key, value);
+              
+              if ( ++count > 2 )
+            	  break;
     	}
     	} finally {
     		IOUtils.closeStream(reader);
-    		}		
+    		}
+    	
+    	String pa = "/ingest/media-delivery.log/conductor_access_raw/2017/12/21/22/40";
+    	System.out.println("list all files at " + pa);
+    	Path pat = new Path( pa);
+    	FileStatus[] fss = fs.listStatus(pat);
+    	for ( FileStatus status : fss ) {
+    		System.out.println("Dir? " + status.isDirectory() + " : " + status.getPath().getName());
     	}
+    }
  
 }

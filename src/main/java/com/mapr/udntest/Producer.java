@@ -1,6 +1,7 @@
 package com.mapr.udntest;
 
 import java.io.InputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,15 +29,14 @@ public class Producer {
 	
 	private void init() throws IOException {
         // set up the producer
-        try (InputStream props = Resources.getResource("producer.props").openStream()) {
-            Properties properties = new Properties();
-            properties.load(props);
-            producer = new KafkaProducer<>(properties);
-        }		
+		FileInputStream props = new FileInputStream("./producer.properties");
+        Properties properties = new Properties();
+        properties.load(props);
+        producer = new KafkaProducer<>(properties);	
 	}
 
 	public void produce(String data) {
-		producer.send(new ProducerRecord<String, String>(topic, data));
+		producer.send(new ProducerRecord<String, String>(topic, Consumer.MESSAGE_KEY, data));
 		count++;
 		if ( count % 100 == 18 ) {
 			producer.flush();

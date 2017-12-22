@@ -1,6 +1,7 @@
 package com.mapr.udntest;
 
 import java.io.InputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,6 +15,8 @@ import org.apache.kafka.clients.consumer.KafkaConsumer;
 import com.google.common.io.Resources;
 
 public class Consumer extends Thread {
+	public static String MESSAGE_KEY = "UDNTEST_MESSAGE_KEY";
+	
 	private String groupId = "mapr-test";
 	private String topic = null;
 	private long consumeSize = Long.MAX_VALUE;
@@ -43,13 +46,13 @@ public class Consumer extends Thread {
 	}
 	
 	public void consume() throws IOException {
-        try (InputStream props = Resources.getResource("consumer.props").openStream()) {
-            Properties properties = new Properties();
-            properties.load(props);
-            properties.setProperty("group.id", groupId);
+        //InputStream props = Resources.getResource("consumer.properties").openStream())
+		FileInputStream props = new FileInputStream("./consumer.properties");
+        Properties properties = new Properties();
+        properties.load(props);
+        properties.setProperty("group.id", groupId);
 
-            consumer = new KafkaConsumer<>(properties);
-        }	
+        consumer = new KafkaConsumer<>(properties);
         
         consumer.subscribe(Arrays.asList(topic));
         int timeouts = 0;
@@ -63,17 +66,21 @@ public class Consumer extends Thread {
                 timeouts = 0;
             }
             for (ConsumerRecord<String, String> record : records) {
+            	String key = record.key();
             	String value = record.value();
-            	if ( print ) {
-            		System.out.println(value);
-            	}
             	
-            	count++;
-            	if ( Math.random() <= testRate ) {
-            		//items.add(value);
-            	}
-            	else {
-            		skipSize++;
+            	if ( key != null && key.equals(MESSAGE_KEY) ) {
+            		if ( print ) {
+            			System.out.println(value);
+            		}
+            	
+            		count++;
+            		if ( Math.random() <= testRate ) {
+            			//items.add(value);
+            		}
+            		else {
+            			skipSize++;
+            		}
             	}
             }
             
