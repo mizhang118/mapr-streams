@@ -8,6 +8,7 @@ import java.util.Map;
 public class DataItem {
 	private String input = null;
 	private String output = null;
+	private Long timestamp = System.currentTimeMillis();
 	
 	private static Map<String, Integer> indices = new HashMap<String, Integer>();
 	
@@ -52,9 +53,6 @@ public class DataItem {
 	}
 	
 	private String convertString(String in) {
-		
-		
-		
 		return in;
 	}
 	
@@ -72,6 +70,10 @@ public class DataItem {
 		}
 		
 		return changed;
+	}
+	
+	public Long getTimestamp() {
+		return this.timestamp;
 	}
 	
 	public void cleanIndex(String idx) {

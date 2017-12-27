@@ -82,7 +82,7 @@ public class MaprStreamsMock {
 		producer.flush();
 		System.err.println("" + producer.getCount() + " items have been pushed into MapStreams.");
 		
-		DataItem.keys();
+		//DataItem.keys();
 		
 		producer.close();
 	}
