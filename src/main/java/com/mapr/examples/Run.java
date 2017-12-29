@@ -2,6 +2,8 @@ package com.mapr.examples;
 
 import com.mapr.udntest.MaprStreamsMock;
 import com.mapr.udntest.EsbMock;
+import com.mapr.udntest.LogrelayMock;
+
 import java.io.IOException;
 
 /**
@@ -30,12 +32,16 @@ public class Run {
         if ( test.equals("esb") ) {
         	mock = new EsbMock(p1);
         }
+        else if ( test.equals("logrelay") ) {
+        	mock = new LogrelayMock(p1);
+        }
         
         switch (test) {
         	case "test":
         		mock.run();
         		break;
         	case "esb":
+        	case "logrelay":
         		mock.run();
         		break;
         	case "producer":

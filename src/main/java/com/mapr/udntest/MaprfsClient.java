@@ -97,7 +97,7 @@ public class MaprfsClient {
 		int mm = arr[4];
 		arr[4] = 5 * (mm / 5);
 		
-		return this.MEDIA_DELIVERY_LOG_BASEDIR + "/" + arr[0] + "/" + arr[1] + "/" + arr[2] + "/" + arr[3] + "/" + arr[4];
+		return this.MEDIA_DELIVERY_LOG_BASEDIR + "/" + arr[0] + "/" + String.format("%02d", arr[1]) + "/" + String.format("%02d", arr[2]) + "/" + String.format("%02d", arr[3]) + "/" + String.format("%02d", arr[4]);
 	}
 	
 	public String nextDataDir(long timestamp) {
