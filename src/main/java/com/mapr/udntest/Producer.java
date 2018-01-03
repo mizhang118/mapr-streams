@@ -1,6 +1,5 @@
 package com.mapr.udntest;
 
-import java.io.InputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -10,19 +9,13 @@ import java.util.Properties;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 
-import com.google.common.io.Resources;
-
-public class Producer {
-	private String topic = null;
+public class Producer extends Config {
 	private KafkaProducer<String, String> producer = null;
-	private long count = 0;
-	private long skipSize = 0;
-	private double testRate = 1;
-	private boolean done = false;
 
 	private List<String> items = new ArrayList<String>();
 	
 	public Producer(String topic) {
+		super();
 		this.topic = topic;
 		try { init(); } catch (Exception e) { e.printStackTrace(System.err); }
 	}

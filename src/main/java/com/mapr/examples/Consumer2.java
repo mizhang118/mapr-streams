@@ -45,7 +45,7 @@ public class Consumer2 {
 
         // and the consumer
         KafkaConsumer<String, String> consumer;
-        try (InputStream props = Resources.getResource("consumer.props").openStream()) {
+        try (InputStream props = Resources.getResource("consumer.properties").openStream()) {
             Properties properties = new Properties();
             properties.load(props);
             properties.setProperty("group.id", groupId);

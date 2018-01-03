@@ -45,7 +45,7 @@ public class Producer2 {
 
         // set up the producer
         KafkaProducer<String, String> producer;
-        try (InputStream props = Resources.getResource("producer.props").openStream()) {
+        try (InputStream props = Resources.getResource("producer.properties").openStream()) {
             Properties properties = new Properties();
             properties.load(props);
             producer = new KafkaProducer<>(properties);

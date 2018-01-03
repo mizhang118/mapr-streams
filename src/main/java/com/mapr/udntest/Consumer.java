@@ -1,6 +1,5 @@
 package com.mapr.udntest;
 
-import java.io.InputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -12,34 +11,28 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 
-import com.google.common.io.Resources;
-
-public class Consumer extends Thread {
+public class Consumer extends Config implements Runnable {
 	public static String MESSAGE_KEY = "UDNTEST_MESSAGE_KEY";
 	
 	private String groupId = "mapr-test";
-	private String topic = null;
 	private long consumeSize = Long.MAX_VALUE;
-	private long skipSize = 0;
-	private long count = 0;
-	private double testRate = 1;
-	private boolean done = false;
 	private boolean print = false;
 
 	private KafkaConsumer<String, String> consumer = null;
 	private List<String> items = new ArrayList<String>();
 	
 	public Consumer(String topic) {
+		super();
 		this.topic = topic;
 	}
 
 	public Consumer(String topic, String groupId) {
-		this.topic = topic;
+		this(topic);
 		this.groupId = groupId;
 	}
 	
 	public Consumer(String topic, String groupId, long cSize, double tRate) {
-		this.topic = topic;
+		this(topic);
 		this.groupId = groupId;
 		this.consumeSize = cSize;
 		this.testRate = tRate;
@@ -95,7 +88,7 @@ public class Consumer extends Thread {
 	public void close() {
 		try { consumer.commitAsync(); consumer.close(); Thread.sleep(1000); } catch (Exception e) { e.printStackTrace(System.err); }
 		if ( !done ) {
-			try { this.interrupt(); } catch (Exception e) { e.printStackTrace(System.err); }
+			//try { this.interrupt(); } catch (Exception e) { e.printStackTrace(System.err); }
 		}
 	}
 	

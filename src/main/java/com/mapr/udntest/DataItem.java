@@ -4,6 +4,7 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class DataItem {
 	private String input = null;
@@ -38,6 +39,8 @@ public class DataItem {
 		String idx = obj.getString("es-index");
 		idx = changeEsIndex(idx.toString());
 		obj.put("es-index", idx);
+		
+		//obj.put("es-id", UUID.randomUUID());
 		
 		if ( idx != null ) {
 			Integer count = indices.get(idx);
