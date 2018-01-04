@@ -16,7 +16,7 @@ public class MaprStreamsMock {
 	protected Producer producer = null;
 	protected Consumer consumer = null;
 	
-	protected long waitingTime = 30000;			//milliseconds
+	protected long waitingTime = 303000;			//milliseconds
 	protected long startTime = System.currentTimeMillis();
 	protected int testCaseNum = 0;
 	protected int passCaseNum = 0;
@@ -51,6 +51,10 @@ public class MaprStreamsMock {
 	        String configTestData = properties.getProperty("testData");
 	        if ( configTestData != null ) {
 	        	this.input = configTestData;
+	        }
+	        String configWaitingTime = properties.getProperty("waitingTime"); //milliseconds
+	        if ( configWaitingTime != null ) {
+	        	try { this.waitingTime = Long.parseLong(configWaitingTime); } catch (Exception e) { e.printStackTrace(System.err); }
 	        }
 		}
 		catch (Exception e) {

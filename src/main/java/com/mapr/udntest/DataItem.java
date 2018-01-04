@@ -40,7 +40,7 @@ public class DataItem {
 		idx = changeEsIndex(idx.toString());
 		obj.put("es-index", idx);
 		
-		//obj.put("es-id", UUID.randomUUID());
+		obj.put("es-id", UUID.randomUUID());
 		
 		if ( idx != null ) {
 			Integer count = indices.get(idx);
