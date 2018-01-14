@@ -61,15 +61,13 @@ public class Consumer extends Config implements Runnable {
             for (ConsumerRecord<String, String> record : records) {
             	String key = record.key();
             	String value = record.value();
-            	
+        		if ( print ) {
+        			System.out.println(value);
+        		}
             	if ( key != null && key.equals(MESSAGE_KEY) ) {
-            		if ( print ) {
-            			System.out.println(value);
-            		}
-            	
             		count++;
             		if ( Math.random() <= testRate ) {
-            			//items.add(value);
+            			items.add(value);
             		}
             		else {
             			skipSize++;
